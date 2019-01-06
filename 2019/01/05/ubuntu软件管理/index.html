@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="学习，感悟">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    ubuntu软件管理 |
+    
+    CEI 言</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-ubuntu软件管理" class="article article-type-post" itemscope="" itemprop="blogPost">
+
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ubuntu软件管理
+    </h1>
+  
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2019/01/05/ubuntu软件管理/" class="article-date">
+  <time datetime="2019-01-05T03:14:34.000Z" itemprop="datePublished">2019-01-05</time>
+</a>
+        
+      </div>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+  <div class="article-gallery">
+    <div class="article-gallery-photos">
+      
+        <a class="article-gallery-img fancybox" href="/imgs/logo.png" rel="gallery_cjqkkjvte0000pb2x9bzz4lvf">
+          <img src="/imgs/logo.png" itemprop="image">
+        </a>
+      
+    </div>
+  </div>
+
+      
+        <p>linux中软件安装跟windows差别比较大，缺少可视界面，以及需要软件无法一键卸载，作为一个强迫症患者，必须搞清楚软件安装以及完全卸载的方法。</p>
+<a id="more"></a>
+<h4 id="查看已安装软件"><a href="#查看已安装软件" class="headerlink" title="查看已安装软件"></a>查看已安装软件</h4><blockquote>
+<p>dpkg -l | grep mysql</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ii  libmysqlclient20:amd64   5.7.24-0ubuntu0.18.04.1    amd64        MySQL database client library</span><br><span class="line">ii  libqt4-sql-mysql:amd64   4:4.8.7+dfsg-7ubuntu1      amd64        Qt 4 MySQL database driver</span><br><span class="line">ii  mysql-common             5.8+1.0.4                  all          MySQL database common files, e.g. /etc/mysql/my.cnf</span><br></pre></td></tr></table></figure>
+<p>第一列 ii：表示软件正常安装 rc：表示软件已卸载,可是配置文件还在</p>
+<h4 id="删除所有rc状态的软件"><a href="#删除所有rc状态的软件" class="headerlink" title="删除所有rc状态的软件"></a>删除所有rc状态的软件</h4><blockquote>
+<p>dpkg -l | grep ^rc | cut -d’ ‘ -f3 | sudo xargs dpkg –purge </p>
+</blockquote>
+<h4 id="卸载软件"><a href="#卸载软件" class="headerlink" title="卸载软件"></a>卸载软件</h4><blockquote>
+<p>dpkg -l | grep wine | cut -d’ ‘ -f3 | sudo xargs dpkg –purge</p>
+</blockquote>
+<p>dpkg的用法</p>
+<p>问题解决了,下面记录下dpkg的常见用法。</p>
+<p>1)安装软件<br>命令:dpkg -i &lt;.deb file name&gt;<br>示例:dpkg -i avg71flm_r28-1_i386.deb<br>2)安装一个目录下面所有的软件包<br>命令:dpkg -R<br>示例:dpkg -R /usr/local/src<br>3)释放软件包,但是不进行配置<br>命令:dpkg –-unpack package_file 如果和-R一起使用,参数可以是一个目录<br>示例:dpkg –-unpack avg71flm_r28-1_i386.deb<br>4)重新配置和释放软件包<br>命令:dpkg –configure package_file<br>如果和-a一起使用,将配置所有没有配置的软件包<br>示例:dpkg –configure avg71flm_r28-1_i386.deb<br>5)删除软件包(保留其配置信息)<br>命令:dpkg -r<br>示例:dpkg -r avg71flm<br>6)替代软件包的信息<br>命令:dpkg –update-avail<br>7)合并软件包信息<br>dpkg –merge-avail<br>8)从软件包里面读取软件的信息<br>命令:dpkg -A package_file<br>9)删除一个包(包括配置信息)<br>命令:dpkg -P<br>10)丢失所有的Uninstall的软件包信息<br>命令:dpkg –forget-old-unavail<br>11)删除软件包的Avaliable信息<br>命令:dpkg –clear-avail<br>12)查找只有部分安装的软件包信息<br>命令:dpkg -C<br>13)比较同一个包的不同版本之间的差别<br>命令:dpkg –compare-versions ver1 op ver2<br>14)显示帮助信息<br>命令:dpkg –help<br>15)显示dpkg的Licence<br>命令:dpkg –licence (or) dpkg –license<br>16)显示dpkg的版本号<br>命令:dpkg –version<br>17)建立一个deb文件<br>命令:dpkg -b directory [filename]<br>18)显示一个Deb文件的目录<br>命令:dpkg -c filename<br>19)显示一个Deb的说明<br>命令:dpkg -I filename [control-file]<br>20)搜索Deb包<br>命令:dpkg -l package-name-pattern<br>示例:dpkg -I vim<br>21)显示所有已经安装的Deb包,同时显示版本号以及简短说明<br>命令:dpkg -l<br>22)报告指定包的状态信息<br>命令:dpkg -s package-name<br>示例:dpkg -s ssh<br>23)显示一个包安装到系统里面的文件目录信息<br>命令:dpkg -L package-Name<br>示例:dpkg -L apache2<br>24)搜索指定包里面的文件(模糊查询)<br>命令:dpkg -S filename-search-pattern<br>25)显示包的具体信息<br>命令:dpkg -p package-name<br>示例:dpkg -p cacti</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/mancelee/2019/01/05/ubuntu软件管理/" data-id="cjqkkjvte0000pb2x9bzz4lvf" class="article-share-link">Share</a>
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+    
+  <nav class="article-nav">
+    
+    
+      <a href="/2018/12/09/ubuntu自动下载bing图片设为壁纸/" class="article-nav-link">
+        <strong class="article-nav-caption">Olde posts</strong>
+        <div class="article-nav-title">ubuntu 系统美化</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  
+  <div class="outer">
+    <ul class="list-inline">
+      <li>&copy; 2019 CEI 言</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://zhwangart.github.io">zhwangart</a></li>
+      <!--
+      <li><a href="/">CEI</a></li>
+      -->
+    </ul>
+  </div>
+</footer>
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shark.svg" alt="CEI 言"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">相册</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>
